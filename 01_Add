@@ -1,0 +1,83 @@
+#!/bin/bash
+
+file="filebook.txt"
+
+while true
+do
+    echo "---- Address Book ----"
+    echo "1. Create"
+    echo "2. View"
+    echo "3. Insert"
+    echo "4. Delete"
+    echo "5. Modify"
+    echo "6. Exit"
+
+    echo "Enter your choice:"
+    read choice
+
+    case $choice in
+
+    1)
+        touch "$file"
+        echo "File created successfully"
+        ;;
+
+    2)
+        if [ -s "$file" ]; then
+            cat "$file"
+        else
+            echo "File is empty"
+        fi
+        ;;
+
+    3)
+        echo "Enter your ID:"
+        read id
+        echo "Enter your name:"
+        read name
+        echo "Enter your city:"
+        read city
+
+        echo "$id, $name,$city" >> "$file"
+        echo "Data is inserted"
+        ;;
+
+    4)
+        echo "Enter ID to delete:"
+        read id
+
+        grep -v "^$id " "$file" > temp.txt
+        mv temp.txt "$file"
+
+        echo "Record deleted"
+        ;;
+
+    5)
+        echo "Enter ID to modify:"
+        read id
+
+        grep -v "^$id " "$file" > temp.txt
+        mv temp.txt "$file"
+
+        echo "Enter the new ID:"
+        read id
+        echo "Enter new name:"
+        read name
+        echo "Enter new city:"
+        read city
+
+        echo "$id $name $city" >> "$file"
+        echo "Data is modified"
+        ;;
+
+    6)
+        echo "Exiting Address Book"
+        exit 0
+        ;;
+
+    *)
+        echo "Invalid choice"
+        ;;
+
+    esac
+done
